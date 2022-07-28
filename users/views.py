@@ -30,4 +30,4 @@ def register(request):
     return render(request,'users/register.html', {'form': form})
 
 def profile(request):
-    return render(request, 'my_learning_app/profile.html')
+    return render(request, 'my_app/profile.html')
