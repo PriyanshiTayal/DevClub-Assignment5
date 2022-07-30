@@ -61,7 +61,7 @@ def dologin(request):
     elif user.user_type == '1':
         return redirect('admin_home')
  
-    return render(request, 'my_app/home.html')
+    
 
 @login_required
 def profile(request):
@@ -96,11 +96,9 @@ def profile(request):
 
 
 #ADMIN VIEWS
-def admin_check(user):
-    return user.is_authenticated and user.user_type == '1' 
+
 
 @login_required()
-@user_passes_test(admin_check)
 def add_staff(request):
     if request.method == 'POST':
         form = AddStaffForm(request.POST)
@@ -126,8 +124,8 @@ def add_staff(request):
     else:
         form = AddStaffForm()
     return render(request,'users/add_staff.html', {'form': form})
-    
-@user_passes_test(admin_check)
+
+@login_required
 def add_course(request):
     if request.method == 'POST':
         course = request.POST.get('course')
