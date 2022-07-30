@@ -11,5 +11,4 @@ def instructor_home(request):
 def admin_home(request):
     return render(request, 'my_app/admin_home.html')
 
-def profile(request):
-    return render(request, 'my_app/profile.html')
+
