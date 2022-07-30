@@ -1,7 +1,7 @@
 from django.db import models
 from tkinter import CASCADE
 from django.contrib.auth.models import AbstractUser
-
+from PIL import Image
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -18,6 +18,17 @@ class Session(models.Model):
 
 class Admin(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
+    profile_pic = models.ImageField(default ='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.admin.username}'
+    def save(self):
+        super().save()
+        img = Image.open(self.profile_pic.path)
+        if img.height> 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.profile_pic.path)
 
 class Instructor(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
@@ -26,9 +37,23 @@ class Instructor(models.Model):
     gender = models.CharField(default='MALE',choices=gender_data,max_length=20)
     address = models.TextField()
 
+    def __str__(self):
+        return f'{self.admin.username}'
+    def save(self):
+        super().save()
+        img = Image.open(self.profile_pic.path)
+        if img.height> 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.profile_pic.path)
+
 class Course(models.Model):
     course_name = models.CharField(max_length=10)
     instructor_id = models.ForeignKey(Instructor, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f'{self.course_name}'
+
 
 class Student(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
@@ -37,5 +62,15 @@ class Student(models.Model):
     gender = models.CharField(default='MALE',choices=gender_data,max_length=20)
     address = models.TextField()
     course_id = models.ForeignKey(Course, on_delete=models.DO_NOTHING, default=1)
-    session_year_id = models.ForeignKey(Session, null=True, on_delete=models.CASCADE)
+    session_year_id = models.ForeignKey(Session, null=True, blank = True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.admin.username}'
+
+    def save(self):
+        super().save()
+        img = Image.open(self.profile_pic.path)
+        if img.height> 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.profile_pic.path)

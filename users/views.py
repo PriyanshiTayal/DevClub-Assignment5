@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser,Admin,Instructor,Student
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm
 
 # Create your views here.
 def register(request):
@@ -55,15 +55,42 @@ def dologin(request):
     auth_login(request, user)
     print(request.user)
  
-    if user.user_type == CustomUser.STUDENT:
+    if user.user_type == '3':
         return redirect('student_home')
-    elif user.user_type == CustomUser.INSTRUCTOR:
+    elif user.user_type == '2':
         return redirect('instructor_home')
-    elif user.user_type == CustomUser.ADMIN:
+    elif user.user_type == '1':
         return redirect('admin_home')
  
     return render(request, 'my_app/home.html')
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST,instance=request.user)
+        if request.user.user_type == '1':
+            p_form = AdminUpdateForm(request.POST,request.FILES,instance=request.user.admin)
+        elif request.user.user_type == '2':
+            p_form = InstructorUpdateForm(request.POST,request.FILES,instance=request.user.instructor)
+        elif request.user.user_type == '3':
+            p_form = StudentUpdateForm(request.POST,request.FILES,instance=request.user.student)
+        
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f' Your Account has been updated successfully!')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        if request.user.user_type == '1':
+            p_form = AdminUpdateForm(instance=request.user.admin)
+        elif request.user.user_type == '2':
+            p_form = InstructorUpdateForm(instance=request.user.instructor)
+        elif request.user.user_type == '3':
+            p_form = StudentUpdateForm(instance=request.user.student)
+    context={
+        'u_form':u_form,
+        'p_form':p_form
+    }
+
+    return render(request, 'users/profile.html', context)
