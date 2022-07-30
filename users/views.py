@@ -1,12 +1,12 @@
 from django.shortcuts import redirect, render
 
 from django.contrib import messages
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import CustomUser,Admin,Instructor,Student
-from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
 
-# Create your views here.
+# GENERAL VIEWS
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -17,12 +17,10 @@ def register(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password1']
             
-            user = CustomUser()
-            user.username = username
-            user.email = email
-            user.password = password
-            user.first_name = first_name
-            user.last_name = last_name
+            user = CustomUser.objects.create_user(username = username,email = email,
+                                                    password = password,
+                                                    first_name = first_name,
+                                                    last_name = last_name)
             user.save()                             
             Admin.objects.create(admin=user)
             messages.success(request, f'{username}, Your Account has been created successfully. Now LogIn to start Learning!')
@@ -47,8 +45,8 @@ def dologin(request):
         messages.error(request, "Please provide all the details!!")
         return render(request, 'users/login.html')
  
-    user = CustomUser.objects.filter(username=username, password=password).last()
-    if not user:
+    user = authenticate(username=username, password=password)
+    if user is None:
         messages.error(request, 'Invalid Login Credentials!!')
         return render(request, 'users/login.html')
  
@@ -94,3 +92,39 @@ def profile(request):
     }
 
     return render(request, 'users/profile.html', context)
+
+
+#ADMIN VIEWS
+@login_required()
+def add_staff(request):
+    if request.method == 'POST':
+        form = AddStaffForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            gender= form.cleaned_data['gender']
+            address=form.cleaned_data['address']
+            
+            user = CustomUser.objects.create_user(username = username,email = email,
+                                                    password = password,
+                                                    first_name = first_name,
+                                                    last_name = last_name, user_type = 2)
+            user.instructor.gender = gender
+            user.instructor.address = address
+            user.save()      
+                      
+            messages.success(request, f'{username} has been added as an Instructor successfully!')
+            return redirect('admin_home')           
+    else:
+        form = AddStaffForm()
+    return render(request,'users/add_staff.html', {'form': form})
+
+def add_course(request):
+    if request.method == 'POST':
+
+    else:
+        return render(request,'users/add_course.html')
+
