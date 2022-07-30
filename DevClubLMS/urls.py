@@ -34,6 +34,7 @@ urlpatterns = [
 
     #ADMIN URLS
     path('add_instructor/', user_views.add_staff, name = 'add_staff'),
+    path('add_course/', user_views.add_course, name = 'add_course'),
 ]
 
 if settings.DEBUG:

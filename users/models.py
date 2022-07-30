@@ -48,7 +48,7 @@ class Instructor(models.Model):
             img.save(self.profile_pic.path)
 
 class Course(models.Model):
-    course_name = models.CharField(max_length=10)
+    course_name = models.CharField(max_length=10,unique=True)
     instructor_id = models.ForeignKey(Instructor, on_delete=models.DO_NOTHING)
 
     def __str__(self):

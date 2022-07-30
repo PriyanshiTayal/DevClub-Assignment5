@@ -1,9 +1,10 @@
+from urllib import request
 from django.shortcuts import redirect, render
 
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
-from django.contrib.auth.decorators import login_required
-from .models import CustomUser,Admin,Instructor,Student
+from django.contrib.auth.decorators import login_required,user_passes_test
+from .models import Course, CustomUser,Admin,Instructor,Student,Session
 from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
 
 # GENERAL VIEWS
@@ -23,7 +24,7 @@ def register(request):
                                                     last_name = last_name)
             user.save()                             
             Admin.objects.create(admin=user)
-            messages.success(request, f'{username}, Your Account has been created successfully. Now LogIn to start Learning!')
+            messages.success(request, f'{username}, Your Account has been Created Successfully. Now LogIn to Start Learning!')
             return redirect('login')           
     else:
         form = UserRegisterForm()
@@ -76,7 +77,7 @@ def profile(request):
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            messages.success(request, f' Your Account has been updated successfully!')
+            messages.success(request, f' Your Account has been Updated Successfully!')
             return redirect('profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
@@ -95,7 +96,11 @@ def profile(request):
 
 
 #ADMIN VIEWS
+def admin_check(user):
+    return user.is_authenticated and user.user_type == '1' 
+
 @login_required()
+@user_passes_test(admin_check)
 def add_staff(request):
     if request.method == 'POST':
         form = AddStaffForm(request.POST)
@@ -116,15 +121,21 @@ def add_staff(request):
             user.instructor.address = address
             user.save()      
                       
-            messages.success(request, f'{username} has been added as an Instructor successfully!')
-            return redirect('admin_home')           
+            messages.success(request, f'{username} has been Added as an Instructor Successfully!')
+            return redirect('add_staff')           
     else:
         form = AddStaffForm()
     return render(request,'users/add_staff.html', {'form': form})
-
+    
+@user_passes_test(admin_check)
 def add_course(request):
     if request.method == 'POST':
+        course = request.POST.get('course')
 
+        course = Course(course_name = course)
+        course.save()
+        messages.success(request, f'Course {course} Added Successfully!')
+        return redirect('add_course')
     else:
         return render(request,'users/add_course.html')
 

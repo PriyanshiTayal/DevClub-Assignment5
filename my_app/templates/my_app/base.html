@@ -23,12 +23,17 @@
                     <!-- Navbar Right Side -->
                         <div class="navbar-nav">
                             {% if user.is_authenticated %}
+                                <!-- {% if user.user_type == '1' %}
+                                <a class="nav-item nav-link" href="{% url 'add_staff' %}">Add Instructors</a>
+                                <a class="nav-item nav-link" href="{% url 'add_course' %}">Add Courses</a>
+                                {% endif %} -->
                                 <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                             {% else %}
                                 <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                             {% endif %}
+                            {% block navbar %}{% endblock navbar %}
                         </div>
                     </div>
                 </div>
@@ -44,7 +49,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {% block content %}{% endblock %}
+                    {% block content %}{% endblock content %}
                 </div>
                 <div class="col-md-4">
                     <div class="content-section">

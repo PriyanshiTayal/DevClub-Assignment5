@@ -1,5 +1,10 @@
 {% extends 'my_app/base.html' %}
 
+{% block navbar %}
+    <a class="nav-item nav-link" href="{% url 'add_staff' %}">Add Instructors</a>
+    <a class="nav-item nav-link" href="{% url 'add_course' %}">Add Courses</a>
+{% endblock navbar %}
+
 {% block content %}
     <h1>Welcome Admin!</h1>
 {% endblock content %}
