@@ -1,6 +1,6 @@
 from unittest.util import _MAX_LENGTH
 from django import forms
-from .models import CustomUser, Student, Admin, Instructor
+from .models import Course, CustomUser, Student, Admin, Instructor, Subject
 from django.contrib.auth.forms import UserCreationForm
 
 class UserRegisterForm(UserCreationForm):
@@ -46,3 +46,13 @@ class AddStaffForm(UserCreationForm):
     address = forms.CharField(max_length=100)
 
     fields = ['username','email','first_name','last_name','gender','password1','password2','address']
+
+class AddSubjectForm(forms.ModelForm):
+    instructor_all = Instructor.objects.all()
+    instructor_name_list = []
+    for instructor in instructor_all:
+        instructor_name_list.append(instructor.admin.username)
+    instructor_id = forms.ChoiceField(choices=instructor_name_list)
+    class Meta:
+        model = Subject
+        fields = ['subject_name','instructor_id']

@@ -1,12 +1,12 @@
 {% extends 'my_app/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
     <div class = "contentsection">
         <form method="GET">
             {% csrf_token %}
             <fieldset class = "form-group">
-                <legend class ="border-bottom mb-4">Add Course</legend>
-                <input type="text" class="form-control" name="course" placeholder="Enter Course Name ">
+                <legend class ="border-bottom mb-4">Add Subject</legend>
+                {{ form|crispy }}
             </fieldset>
             <div class = "form-group">
                 <button class = "btn btn-outline-info" type = "submit">Add</button>

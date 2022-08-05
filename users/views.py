@@ -1,11 +1,12 @@
 from urllib import request
+from django.forms import ChoiceField
 from django.shortcuts import redirect, render
 
 from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required,user_passes_test
-from .models import Course, CustomUser,Admin,Instructor,Student,Session
-from .forms import UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
+from .models import Course, CustomUser,Admin,Instructor,Student,Session, Subject
+from .forms import  AddSubjectForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
 
 # GENERAL VIEWS
 def register(request):
@@ -126,14 +127,25 @@ def add_staff(request):
     return render(request,'users/add_staff.html', {'form': form})
 
 @login_required
-def add_course(request):
+def add_subject(request):
     if request.method == 'POST':
-        course = request.POST.get('course')
+        form = AddSubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Subject Added Successfully!')
+            return redirect('add_subject')
+    else:
+        form = AddSubjectForm()
+    return render(request,'users/add_subject.html',{'form': form})
 
-        course = Course(course_name = course)
-        course.save()
-        messages.success(request, f'Course {course} Added Successfully!')
+@login_required
+def add_course(request):
+    if request.method == "POST":
+        course = request.POST.get('course')
+        course_model = Course(course_name=course)
+        course_model.save()
+        messages.success(request, "Course Added Successfully!")            
         return redirect('add_course')
     else:
-        return render(request,'users/add_course.html')
+        return render(request, "users/add_course.html")
 

@@ -48,11 +48,15 @@ class Instructor(models.Model):
             img.save(self.profile_pic.path)
 
 class Course(models.Model):
-    course_name = models.CharField(max_length=10,unique=True)
+    course_name = models.CharField(max_length=255)
+
+class Subject(models.Model):
+    subject_name = models.CharField(max_length=10,unique=True)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE, default=1)
     instructor_id = models.ForeignKey(Instructor, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f'{self.course_name}'
+        return f'{self.subject_name}'
 
 
 class Student(models.Model):
