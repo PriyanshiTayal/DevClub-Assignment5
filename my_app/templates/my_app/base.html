@@ -18,7 +18,13 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarToggle">
                         <div class="navbar-nav mr-auto">
-                            <a class="nav-item nav-link" href="/">Home</a>
+                            {% if user.user_type == '1' %}
+                                <a class="nav-item nav-link" href="{% url 'admin_home'%}">Home</a>
+                            {% elif user.user_type == '2' %}
+                                <a class="nav-item nav-link" href="{% url 'instructor_home'%}">Home</a>                            
+                            {% elif user.user_type == '3' %}
+                                <a class="nav-item nav-link" href="{% url 'student_home'%}">Home</a>                            
+                            {% endif %}
                         </div>
                     <!-- Navbar Right Side -->
                         <div class="navbar-nav">
@@ -28,12 +34,13 @@
                                 <a class="nav-item nav-link" href="{% url 'add_subject' %}">Add Subjects</a>
                                 {% endif %} -->
                                 <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                                {% block navbar %}{% endblock navbar %}
                                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                             {% else %}
                                 <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                             {% endif %}
-                            {% block navbar %}{% endblock navbar %}
+                            
                         </div>
                     </div>
                 </div>

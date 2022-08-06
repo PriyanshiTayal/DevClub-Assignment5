@@ -1,0 +1,20 @@
+{% extends 'my_app/base.html' %}
+
+{% block content %}
+    <div class = "contentsection">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class = "form-group">
+                <legend class ="border-bottom mb-4">Add Session</legend>
+                <h>Enter Session Start Date</h>
+                <input type="text" class="form-control" name="start_year" placeholder="YYYY-MM-DD">
+                <h>Enter Session End Date</h>
+                <input type="text" class="form-control" name="end_year" placeholder="YYYY-MM-DD">
+            </fieldset>
+            <div class = "form-group">
+                <button class = "btn btn-outline-info" type = "submit">Add</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

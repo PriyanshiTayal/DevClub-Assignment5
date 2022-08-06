@@ -1,5 +1,7 @@
 {% extends 'my_app/base.html' %}
-
+{% block navbar %}
+    <a class="nav-item nav-link" href="{% url 'my_subjects' %}">My Subjects</a>
+{% endblock navbar %}
 {% block content %}
     <h1>Welcome Instructor!</h1>
 {% endblock content %}

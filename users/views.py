@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Course, CustomUser,Admin,Instructor,Student,Session, Subject
-from .forms import  AddSubjectForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
+from .forms import  DocumentForm, AddSubjectForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
+from documents.models import Document
 
 # GENERAL VIEWS
 def register(request):
@@ -18,13 +19,12 @@ def register(request):
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password1']
-            
+            user_type = form.cleaned_data['user_type']
             user = CustomUser.objects.create_user(username = username,email = email,
                                                     password = password,
                                                     first_name = first_name,
-                                                    last_name = last_name)
-            user.save()                             
-            Admin.objects.create(admin=user)
+                                                    last_name = last_name, user_type = user_type)
+                            
             messages.success(request, f'{username}, Your Account has been Created Successfully. Now LogIn to Start Learning!')
             return redirect('login')           
     else:
@@ -116,10 +116,10 @@ def add_staff(request):
                                                     password = password,
                                                     first_name = first_name,
                                                     last_name = last_name, user_type = 2)
+                                        
             user.instructor.gender = gender
             user.instructor.address = address
-            user.save()      
-                      
+            user.save()
             messages.success(request, f'{username} has been Added as an Instructor Successfully!')
             return redirect('add_staff')           
     else:
@@ -131,10 +131,17 @@ def add_subject(request):
     if request.method == 'POST':
         form = AddSubjectForm(request.POST)
         if form.is_valid():
-            form.save()
+            subject_name = form.cleaned_data['subject_name']
+            course_name = form.cleaned_data['course_name']
+            instructor_name = form.cleaned_data['instructor_name']
+            course = Course.objects.get(course_name = course_name)
+            instructor = Instructor.objects.get(instructor.admin.username == instructor_name)
+            user = Course.objects.create(subject_name = subject_name, course_id = course.id, instructor_id = instructor.id)
+            user.save()
             messages.success(request, f'Subject Added Successfully!')
             return redirect('add_subject')
     else:
+
         form = AddSubjectForm()
     return render(request,'users/add_subject.html',{'form': form})
 
@@ -149,3 +156,48 @@ def add_course(request):
     else:
         return render(request, "users/add_course.html")
 
+@login_required
+def add_session(request):
+    if request.method == "POST":
+        start_year = request.POST.get('start_year')
+        end_year = request.POST.get('end_year')
+
+        sessionyear = Session(start_year=start_year,end_year=end_year)
+        sessionyear.save()
+        messages.success(request, "Session Year added Successfully!")
+        return redirect("add_session")
+    else:
+        return render(request, "users/add_session.html")
+
+#Instructor Views
+@login_required
+def my_subjects(request):
+    context = {
+        'subjects': request.user.instructor.subject_set.all()
+    }
+    return render(request, "users/my_subjects.html", context)
+
+#Student Views
+def student_subjects(request):
+    context = {
+        'subjects': request.user.student.course_id.subject_set.all()
+    }    
+    return render(request, "users/student_subjects.html", context)
+
+
+def subject_detail(request,sub):
+    subject = Subject.objects.get(subject_name = sub)
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            doc = form.cleaned_data['doc']
+            description = form.cleaned_data['description']
+            Doc = Document.objects.create(title = title,doc = doc, description = description, subject_id = subject)
+            Doc.save()
+            messages.success(request, "Document Uploaded Successfully!") 
+            return redirect('my_subjects')
+    else:
+        form = DocumentForm()
+        uploaded_docs = Document.objects.filter(subject_id = subject)
+    return render(request, "users/subject_detail.html", {'form':form, 'subject':subject, 'docs':uploaded_docs})

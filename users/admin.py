@@ -1,7 +1,10 @@
 from django.contrib import admin
-from .models import Instructor, Student, Course, Admin, Session, Subject
+from .models import Instructor, Student, Course, Admin, Session, Subject, CustomUser
 
 # Register your models here.
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('id','username')
+
 class InstructorAdmin(admin.ModelAdmin):
     list_display = ('id','gender','profile_pic')
 
@@ -20,6 +23,7 @@ class AdminAdmin(admin.ModelAdmin):
 class SessionAdmin(admin.ModelAdmin):
     list_display = ('id','start_year','end_year')
 
+admin.site.register(CustomUser,CustomUserAdmin)
 admin.site.register(Instructor, InstructorAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Course, CourseAdmin)

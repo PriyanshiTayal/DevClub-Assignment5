@@ -1,0 +1,10 @@
+{% extends 'my_app/base.html' %}
+
+{% block content %}
+<div class="content-section">
+    {% for subject in subjects %}
+        <h1>{{ subject.subject_name }}</h1>
+        <p> Total Students : {{ subject.course_id.student_set.all().count() }}</p>
+    {% endfor %}
+</div>
+{% endblock content %}

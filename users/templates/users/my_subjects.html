@@ -1,0 +1,11 @@
+{% extends 'my_app/base.html' %}
+
+{% block content %}
+<div class="content-section">
+    {% for sub in subjects %}
+        <h1><a href= "/subject/{{sub.subject_name}}">{{ sub.subject_name }}</a></h1>
+        <h3> Course : {{ sub.course_id.course_name }}</h3>
+        <p> Total Students : {{ sub.course_id.student_set.count }}</p>
+    {% endfor %}
+</div>
+{% endblock content %}

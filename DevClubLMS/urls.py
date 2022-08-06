@@ -36,6 +36,14 @@ urlpatterns = [
     path('add_instructor/', user_views.add_staff, name = 'add_staff'),
     path('add_subject/', user_views.add_subject, name = 'add_subject'),
     path('add_course/', user_views.add_course, name = 'add_course'),
+    path('add_session/', user_views.add_session, name = 'add_session'),
+
+    #INSTRUCTOR URLS
+    path('my_subjects/', user_views.my_subjects, name = 'my_subjects'),    
+
+    #STUDENT URLS
+    path('student_subjects/', user_views.student_subjects, name = 'student_subjects'),
+    path('subject/<slug:sub>', user_views.subject_detail, name = 'subject_detail'),     
 ]
 
 if settings.DEBUG:
