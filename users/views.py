@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Course, CustomUser,Admin,Instructor,Student,Session, Subject
-from .forms import  DocumentForm, AddSubjectForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
+from .forms import  DocumentForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
 from documents.models import Document
 
 # GENERAL VIEWS
@@ -128,22 +128,27 @@ def add_staff(request):
 
 @login_required
 def add_subject(request):
+    courses = Course.objects.all()
+    instructors = Instructor.objects.all()
+    context = {
+        'instructors': instructors,
+        'courses' : courses
+    } 
+    return render(request,'users/add_subject.html',context)
+
+def add_subject_save(request):
     if request.method == 'POST':
-        form = AddSubjectForm(request.POST)
-        if form.is_valid():
-            subject_name = form.cleaned_data['subject_name']
-            course_name = form.cleaned_data['course_name']
-            instructor_name = form.cleaned_data['instructor_name']
-            course = Course.objects.get(course_name = course_name)
-            instructor = Instructor.objects.get(instructor.admin.username == instructor_name)
-            user = Course.objects.create(subject_name = subject_name, course_id = course.id, instructor_id = instructor.id)
-            user.save()
+            subject_name = request.POST.get['subject']
+            course_id = request.POST.get['course']
+            instructor_id = request.POST.get['instructor']
+            course = Course.objects.get(id = course_id)
+            instructor = Instructor.objects.get(id == instructor_id)
+            sub = Subject(subject_name = subject_name, course_id = course, instructor_id = instructor)
+            sub.save()
             messages.success(request, f'Subject Added Successfully!')
             return redirect('add_subject')
     else:
-
-        form = AddSubjectForm()
-    return render(request,'users/add_subject.html',{'form': form})
+        return render(request,'users/add_subject.html')
 
 @login_required
 def add_course(request):

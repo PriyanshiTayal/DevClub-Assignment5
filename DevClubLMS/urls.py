@@ -37,6 +37,7 @@ urlpatterns = [
     path('add_subject/', user_views.add_subject, name = 'add_subject'),
     path('add_course/', user_views.add_course, name = 'add_course'),
     path('add_session/', user_views.add_session, name = 'add_session'),
+    path('add_subject_save/', user_views.add_subject_save, name = 'add_subject_save'),
 
     #INSTRUCTOR URLS
     path('my_subjects/', user_views.my_subjects, name = 'my_subjects'),    

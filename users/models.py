@@ -17,8 +17,8 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
 
 class Session(models.Model):
-    start_year = models.DateField()
-    end_year = models.DateField()
+    start_year = models.IntegerField()
+    end_year = models.IntegerField()
     objects = models.Manager()
 
 class Admin(models.Model):

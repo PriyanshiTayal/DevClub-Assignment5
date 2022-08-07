@@ -5,11 +5,23 @@
 <h1>{{ subject.subject_name }}</h1>
 <div class="content-section">
     <h2>Uploaded Files</h2>
-    {% for doc in docs %}
-        <h3>{{ doc.title }}</h3>
-        <p> {{ doc.path.url }}</p>
-        <p> {{ doc.description }}</p>
-    {% endfor %}
+    {% if docs %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date Uploaded</th>
+        </tr>
+        {% for doc in docs %}
+        <tr>
+            <td><a href="{{ doc.doc.url }}">{{ doc.title }}</a></td>
+            <td>{{ doc.description }}</td>
+            <td>{{ doc.uploaded_at|date:"F d, Y" }}</td>
+        {% endfor %}
+        </table>
+    {% else %}
+    <h3>No Documents!</h3>
+    {% endif %}
 </div>
 <div class="content-section">
 

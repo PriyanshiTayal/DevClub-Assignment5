@@ -48,20 +48,6 @@ class AddStaffForm(UserCreationForm):
         model = CustomUser
         fields = ['username','email','first_name','last_name','gender','password1','password2','address']
 
-class AddSubjectForm(forms.ModelForm):
-    instructor_all = Instructor.objects.all()
-    instructor_name_list = []
-    for instructor in instructor_all:
-        instructor_name_list.append(instructor.admin.username)
-    instructor_name = forms.ChoiceField(choices=instructor_name_list)
-    course_all = Course.objects.all()
-    course_name_list = []
-    for course in course_all:
-        course_name_list.append(course.course_name)
-    course_name = forms.ChoiceField(choices=course_name_list)
-    class Meta:
-        model = Subject
-        fields = ['subject_name','instructor_name', 'course_name']
 
 class DocumentForm(forms.ModelForm):
     class Meta:
