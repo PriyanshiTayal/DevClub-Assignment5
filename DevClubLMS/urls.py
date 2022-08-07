@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from users import views as user_views
 from my_app import views as myapp_views
+from communication import views as comm_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -38,13 +39,18 @@ urlpatterns = [
     path('add_course/', user_views.add_course, name = 'add_course'),
     path('add_session/', user_views.add_session, name = 'add_session'),
     path('add_subject_save/', user_views.add_subject_save, name = 'add_subject_save'),
+    path('instructor_feed_reply/', comm_views.instructor_feed_reply, name = 'instructor_feed_reply'),
+    path('student_feed_reply/', comm_views.student_feed_reply, name = 'student_feed_reply'),
 
     #INSTRUCTOR URLS
-    path('my_subjects/', user_views.my_subjects, name = 'my_subjects'),    
+    path('instructor_subjects/', user_views.instructor_subjects, name = 'instructor_subjects'), 
+    path('instructor_feedback/', comm_views.instructor_feedback, name = 'instructor_feedback'), 
+    
 
     #STUDENT URLS
     path('student_subjects/', user_views.student_subjects, name = 'student_subjects'),
-    path('subject/<slug:sub>', user_views.subject_detail, name = 'subject_detail'),     
+    path('subject/<slug:sub>', user_views.subject_detail, name = 'subject_detail'), 
+    path('student_feedback/', comm_views.student_feedback, name = 'student_feedback'),    
 ]
 
 if settings.DEBUG:

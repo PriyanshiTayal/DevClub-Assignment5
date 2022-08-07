@@ -4,9 +4,10 @@
     <a class="nav-item nav-link" href="{% url 'add_staff' %}">Add Instructors</a>
     <a class="nav-item nav-link" href="{% url 'add_subject' %}">Add Subjects</a>
     <a class="nav-item nav-link" href="{% url 'add_course' %}">Add Courses</a>
-    <a class="nav-item nav-link" href="{% url 'add_session' %}">Add Sessions</a>
+    <a class="nav-item nav-link" href="{% url 'instructor_feed_reply' %}">Instructor Feedback</a>
+    <a class="nav-item nav-link" href="{% url 'student_feed_reply' %}">Student Feedback</a>    
 {% endblock navbar %}
 
 {% block content %}
-    <h1>Welcome Admin!</h1>
+    <h1>Welcome {{user.username}}!</h1>
 {% endblock content %}

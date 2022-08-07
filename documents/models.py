@@ -4,7 +4,6 @@ from tkinter import CASCADE
 from django.db import models
 from users.models import Subject
 
-from users.models import Subject
 
 # Create your models here.
 class Document(models.Model):

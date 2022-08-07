@@ -135,7 +135,7 @@ def add_subject(request):
         'courses' : courses
     } 
     return render(request,'users/add_subject.html',context)
-
+@login_required
 def add_subject_save(request):
     if request.method == 'POST':
             subject_name = request.POST.get['subject']
@@ -176,20 +176,21 @@ def add_session(request):
 
 #Instructor Views
 @login_required
-def my_subjects(request):
+def instructor_subjects(request):
     context = {
         'subjects': request.user.instructor.subject_set.all()
     }
-    return render(request, "users/my_subjects.html", context)
+    return render(request, "users/instructor_subjects.html", context)
 
 #Student Views
+@login_required
 def student_subjects(request):
     context = {
         'subjects': request.user.student.course_id.subject_set.all()
     }    
     return render(request, "users/student_subjects.html", context)
 
-
+@login_required
 def subject_detail(request,sub):
     subject = Subject.objects.get(subject_name = sub)
     if request.method == 'POST':

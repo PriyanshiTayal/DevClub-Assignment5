@@ -48,3 +48,29 @@ Try to implement as many features as you can, but make sure to plan the structur
 - Advice on Backend Engineering by [Hussein Nasser](https://www.youtube.com/c/HusseinNasser-software-engineering)
 - Guide for Deploying Python apps on [Heroku](https://devcenter.heroku.com/categories/python-support)
 - Guide for [Postman Documenter](https://learning.postman.com/docs/publishing-your-api/documenting-your-api/)
+
+
+### My Learning App
+- Created Models in users app: CustomUser, Admin, Instructor, Student, Session, Course, Subject
+- Created Models in documents app: Document
+- CustomUser is overridden User model with attribute 'usertype', depending on user is Admin, Instructor or Student
+- views are created in 'users' app for anyone to create, login, logout account using 'Register', 'Login', 'Logout' links on the app home page
+- Profile can be updated by users.
+- Users can add profile and profile picture as well picture as well.
+- views are created in 'users' app for Admin to add Session, Courses, Subjects, Instructors, Students using links on his app-home page
+- Admin assigns a Subject its Instructor and course.
+- An Instructor can have multiple subjects. 
+- A Course can have multiple subjects.
+- Admin assigns a Student its course, then student have all the subjects in that Course.
+- Instructor can see all the subjects he is assigned, can upload documents in each course.
+- Students can see all the subjects in his course and the documents uploaded in each with the description.
+- Instructor and Students can give Feedback to admin and admin can reply back.
+- Instructor can upload documents in courses with title and description.
+- Students can see the documents and can download the files.
+
+# Resources I used are
+- Introduction to Python and Django by [Programming With Mosh](https://youtu.be/_uQrJ0TkZlc)
+- Detailed Django Tutorials by [Corey Schafer](https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p)
+- [Django Official Docs](https://www.djangoproject.com/start/)
+- StackOverflow for error solving
+- W3schools for html and javascript 

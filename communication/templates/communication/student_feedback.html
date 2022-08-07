@@ -1,0 +1,75 @@
+{% extends 'my_app/base.html' %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Leave a Feedback Message</h3>
+                </div>
+
+                        
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-body">
+                       
+                        <div class="form-group">
+                            <label>Feedback Message </label>
+                            <textarea name="feedback" class="form-control" rows="6" placeholder="Feedback Message"></textarea>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Leave a Feedback</button>
+                    </div>
+
+                </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Feedback History</h3>
+                    </div>
+
+                    <div class="card-body">
+                       <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>Sent On</th>
+                                    <th>Feedback Message</th>
+                                    <th>Feedback Reply</th>
+                                </tr>
+                                </thead>
+                                
+                                {% for row in feedback_data %}
+                                <tr>
+                                    <td>{{ row.sent_at }}</td>
+                                    <td>{{ row.feedback }}</td>
+                                    <td>{{ row.feedback_reply }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+ 
+                </div>
+            </div>
+        </div>
+
+    </div>
+  </section>
+
+{% endblock content %}

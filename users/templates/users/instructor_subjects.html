@@ -8,16 +8,15 @@
             <div class="col-md-12">
            
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Course : {{ user.student.course_id.course_name }}</strong></h3>
+                        <h3 class="card-title"><strong>Subjects</strong></h3>
                     </div>
-                    {% for subject in subjects %}
+                    {% for sub in subjects %}
                         <div class="content-section">
                             <div class="card-header">
-                                <h2 class="card-title"><a href= "/subject/{{subject.subject_name}}"><strong>{{ subject.subject_name }}</strong></a></h2>
+                                <h2 class="card-title"><a href= "/subject/{{sub.subject_name}}"><strong>{{ sub.subject_name }}</strong></a></h2>
                             </div>
-                            <p><strong> Instructor : {{ subject.instructor_id.admin.get_full_name }} </strong></p>
-                            <p> Total Students : {{ subject.course_id.student_set.count }}</p>
-                            
+                            <h3> Course : {{ sub.course_id.course_name }}</h3>
+                            <p> Total Students : {{ sub.course_id.student_set.count }}</p>
                         </div>
                     {% endfor %}
               

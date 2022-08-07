@@ -1,39 +1,62 @@
 {% extends 'my_app/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+<section class="content">
+    <div class="container-fluid">
 
-<h1>{{ subject.subject_name }}</h1>
-<div class="content-section">
-    <h2>Uploaded Files</h2>
-    {% if docs %}
-    <table>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Date Uploaded</th>
-        </tr>
-        {% for doc in docs %}
-        <tr>
-            <td><a href="{{ doc.doc.url }}">{{ doc.title }}</a></td>
-            <td>{{ doc.description }}</td>
-            <td>{{ doc.uploaded_at|date:"F d, Y" }}</td>
-        {% endfor %}
-        </table>
-    {% else %}
-    <h3>No Documents!</h3>
-    {% endif %}
-</div>
-<div class="content-section">
+        <div class="row">
+            <div class="col-md-12">
 
-    <form method="POST" enctype = "multipart/form-data">
-        {% csrf_token %}
-        <fieldset class = "form-group">
-            <legend class ="border-bottom mb-4">Upload Document</legend>
-            {{ form|crispy }}
-        </fieldset>
-        <div class = "form-group">
-            <button class = "btn btn-outline-info" type = "submit">Upload</button>
+                <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"><strong>{{ subject.subject_name }}</strong></h3>
+                </div>
+
+                <div class="content-section">
+                    <h2>Uploaded Files</h2>
+                    {% if docs %}
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class = "table">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Date Uploaded</th>
+                                </tr>
+                                </thead>
+                                {% for doc in docs %}
+                                <tr>
+                                    <td><a href="{{ doc.doc.url }}">{{ doc.title }}</a></td>
+                                    <td>{{ doc.description }}</td>
+                                    <td>{{ doc.uploaded_at|date:"F d, Y" }}</td>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                    {% else %}
+                    <h3>No Documents!</h3>
+                    {% endif %}
+                </div>
+                {% if user.user_type == '2' %}
+                <div class="content-section">
+                    
+                    <form method="POST" enctype = "multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset class = "form-group">
+                            <h2>Upload Document</h2>
+                            {{ form|crispy }}
+                        </fieldset>
+                        <div class = "form-group">
+                            <button class = "btn btn-primary" type = "submit">Upload</button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+                </div>
+            </div>
         </div>
-    </form>
-</div>
+
+    </div>
+</section>
 {% endblock content %}
