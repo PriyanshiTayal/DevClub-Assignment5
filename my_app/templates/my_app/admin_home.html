@@ -1,14 +1,14 @@
 {% extends 'my_app/base.html' %}
 
-{% block navbar %}
-    <a class="nav-item nav-link" href="{% url 'add_staff' %}">Add Instructors</a>
-    <a class="nav-item nav-link" href="{% url 'add_student' %}">Add Students</a>
-    <a class="nav-item nav-link" href="{% url 'add_subject' %}">Add Subjects</a>
-    <a class="nav-item nav-link" href="{% url 'add_course' %}">Add Courses</a>
-    <a class="nav-item nav-link" href="{% url 'add_session' %}">Add Session</a>    
-    <a class="nav-item nav-link" href="{% url 'instructor_feed_reply' %}">Instructor Feedback</a>
-    <a class="nav-item nav-link" href="{% url 'student_feed_reply' %}">Student Feedback</a>    
-{% endblock navbar %}
+{% block sidebar %}
+    <a class="list-group-item list-group-item-light" href="{% url 'add_staff' %}">Add Instructors</a>
+    <a class="list-group-item list-group-item-light" href="{% url 'add_student' %}">Add Students</a>
+    <a class="list-group-item list-group-item-light" href="{% url 'add_subject' %}">Add Subjects</a>
+    <a class="list-group-item list-group-item-light" href="{% url 'add_course' %}">Add Courses</a>
+    <a class="list-group-item list-group-item-light" href="{% url 'add_session' %}">Add Session</a>    
+    <a class="list-group-item list-group-item-light" href="{% url 'instructor_feed_reply' %}">Instructor Feedback</a>
+    <a class="list-group-item list-group-item-light" href="{% url 'student_feed_reply' %}">Student Feedback</a>    
+{% endblock sidebar %}
 
 {% block content %}
 <section class="content">

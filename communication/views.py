@@ -32,7 +32,7 @@ def instructor_feed_reply(request):
         feedback = InstructorFeedback.objects.get(id=feedback_id)
         feedback.feedback_reply = feedback_reply
         feedback.save()
-        messages.success(request, "Feedback Sent Successfully!")
+        messages.success(request, "Reply Sent Successfully!")
         return redirect('instructor_feed_reply')
 
     else:
@@ -67,8 +67,8 @@ def student_feed_reply(request):
         feedback = StudentFeedback.objects.get(id=feedback_id)
         feedback.feedback_reply = feedback_reply
         feedback.save()
-        messages.success(request, "Feedback Sent Successfully!")
-        return redirect('instructor_feed_reply')
+        messages.success(request, "Reply Sent Successfully!")
+        return redirect('student_feed_reply')
 
     else:
         feedbacks = StudentFeedback.objects.all()

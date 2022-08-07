@@ -1,8 +1,8 @@
 {% extends 'my_app/base.html' %}
-{% block navbar %}
-    <a class="nav-item nav-link" href="{% url 'instructor_subjects' %}">My Subjects</a>
-    <a class="nav-item nav-link" href="{% url 'instructor_feedback' %}">Feedback</a>
-{% endblock navbar %}
+{% block sidebar %}
+    <a class="list-group-item list-group-item-light" href="{% url 'instructor_subjects' %}">My Subjects</a>
+    <a class="list-group-item list-group-item-light" href="{% url 'instructor_feedback' %}">Feedback</a>
+{% endblock sidebar %}
 {% block content %}
 <section class="content">
     <div class="container-fluid">
