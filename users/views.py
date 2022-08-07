@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Course, CustomUser,Admin,Instructor,Student,Session, Subject
-from .forms import  DocumentForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
+from .forms import  AddStudentForm,DocumentForm, UserRegisterForm, UserUpdateForm, StudentUpdateForm, InstructorUpdateForm, AdminUpdateForm, AddStaffForm
 from documents.models import Document
 
 # GENERAL VIEWS
@@ -126,6 +126,40 @@ def add_staff(request):
         form = AddStaffForm()
     return render(request,'users/add_staff.html', {'form': form})
 
+@login_required()
+def add_student(request):
+    if request.method == 'POST':
+        form = AddStudentForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            gender= form.cleaned_data['gender']
+            address=form.cleaned_data['address']
+            
+            user = CustomUser.objects.create_user(username = username,email = email,
+                                                    password = password,
+                                                    first_name = first_name,
+                                                    last_name = last_name, user_type = 2)
+                                        
+            user.instructor.gender = gender
+            user.instructor.address = address
+            user.save()
+            messages.success(request, f'{username} has been Added as an Instructor Successfully!')
+            return redirect('add_student')           
+    else:
+        form = AddStaffForm()
+        courses = Course.objects.all()
+        session = Session.objects.all()
+        context = {
+            'sessions': session,
+            'courses' : courses,
+            'form': form
+        }
+    return render(request,'users/add_student.html', context)
+
 @login_required
 def add_subject(request):
     courses = Course.objects.all()
@@ -173,6 +207,8 @@ def add_session(request):
         return redirect("add_session")
     else:
         return render(request, "users/add_session.html")
+
+
 
 #Instructor Views
 @login_required

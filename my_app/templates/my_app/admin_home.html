@@ -2,12 +2,38 @@
 
 {% block navbar %}
     <a class="nav-item nav-link" href="{% url 'add_staff' %}">Add Instructors</a>
+    <a class="nav-item nav-link" href="{% url 'add_student' %}">Add Students</a>
     <a class="nav-item nav-link" href="{% url 'add_subject' %}">Add Subjects</a>
     <a class="nav-item nav-link" href="{% url 'add_course' %}">Add Courses</a>
+    <a class="nav-item nav-link" href="{% url 'add_session' %}">Add Session</a>    
     <a class="nav-item nav-link" href="{% url 'instructor_feed_reply' %}">Instructor Feedback</a>
     <a class="nav-item nav-link" href="{% url 'student_feed_reply' %}">Student Feedback</a>    
 {% endblock navbar %}
 
 {% block content %}
-    <h1>Welcome {{user.username}}!</h1>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Welcome!</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="media">
+                            <img class="rounded-circle account-img" src="{{ user.admin.profile_pic.url }}">
+
+                            <div class="media-body">
+                                <h2 class="account-heading">{{ user.get_full_name }}</h2>
+                                <p class="text-secondary">{{ user.email}}</p>
+                                
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
 {% endblock content %}

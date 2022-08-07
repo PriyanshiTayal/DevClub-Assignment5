@@ -35,6 +35,7 @@ urlpatterns = [
 
     #ADMIN URLS
     path('add_instructor/', user_views.add_staff, name = 'add_staff'),
+    path('add_student/', user_views.add_student, name = 'add_student'),
     path('add_subject/', user_views.add_subject, name = 'add_subject'),
     path('add_course/', user_views.add_course, name = 'add_course'),
     path('add_session/', user_views.add_session, name = 'add_session'),

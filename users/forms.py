@@ -48,6 +48,16 @@ class AddStaffForm(UserCreationForm):
         model = CustomUser
         fields = ['username','email','first_name','last_name','gender','password1','password2','address']
 
+class AddStudentForm(UserCreationForm):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
+    gender_data = (("MALE","MALE"),("FEMALE","FEMALE"),("OTHER","OTHER"))
+    gender = forms.ChoiceField(choices=gender_data)
+    address = forms.CharField(max_length=100)
+    class Meta:
+        model = CustomUser
+        fields = ['username','email','first_name','last_name','gender','password1','password2','address']
 
 class DocumentForm(forms.ModelForm):
     class Meta:
